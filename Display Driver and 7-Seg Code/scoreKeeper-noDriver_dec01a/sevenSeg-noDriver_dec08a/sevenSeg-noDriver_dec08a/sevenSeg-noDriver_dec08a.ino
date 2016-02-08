@@ -10,11 +10,26 @@
  * WARNING: Blue team's display was installed upside-down. The pin sequence must be inverted.
  * */
 
-#include <LedControl.h>
-#include <Adafruit_NeoPixel.h>
+//#include <LedControl.h>
+//#include <Adafruit_NeoPixel.h>
 
 //const int datainP = 12, clkP = 11, loadP = 10; //Constants for pins. Adjust as needed. ##CURRENTLY USELESS DRIVER CODE
 
+#define DISP1_A 7
+#define DISP1_B 8
+#define DISP1_C 9
+#define DISP1_D 10
+#define DISP1_E 11
+#define DISP1_F 12
+#define DISP1_G 13
+
+#define DISP2_E 2
+#define DISP2_D 3
+#define DISP2_C 4
+#define DISP2_A 5
+#define DISP2_B A3
+#define DISP2_G A4
+#define DISP2_F A5
 
 //LedControl lc = LedControl(datainP, clkP, loadP, 2); //refer to constants, 2 means 2 displays ##CURRENTLY USELESS DRIVER CODE
 
@@ -40,8 +55,39 @@ void setup() {
   pinMode(A0, INPUT_PULLUP); //Red Team bumper
   pinMode(A1, INPUT_PULLUP); //Blue Team bumper
   pinMode(A2, INPUT_PULLUP); //Reset Button
-  pinMode(A3, INPUT_PULLUP); //Scoring Toggle
+  pinMode(A3, OUTPUT); //Scoring Toggle
+  pinMode(A4, OUTPUT);
+  pinMode(A5, OUTPUT);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(13, OUTPUT);
   Serial.begin(9600);
+  Serial.println("Ready");
+
+  digitalWrite(2, LOW);
+  digitalWrite(3, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+  digitalWrite(8, LOW);
+  digitalWrite(9, LOW);
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
+  digitalWrite(12, LOW);
+  digitalWrite(13, LOW);
+  digitalWrite(A4, LOW);
+  digitalWrite(A5, LOW);
+  digitalWrite(A3, LOW);
   
   //Code to prep the controller and 7-seg displays
   //lc.shutdown(0,false);
@@ -54,13 +100,13 @@ void intToDigWrite(int intput, int disp){ //intput is the character the display 
   if(disp==0) //left display
     switch(intput){
       case 0: //see explanation in header
-              digitalWrite(0,HIGH);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,HIGH);
-              digitalWrite(4,HIGH);
-              digitalWrite(5,HIGH);
-              digitalWrite(6,LOW);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,HIGH);
+              digitalWrite(DISP1_E,HIGH);
+              digitalWrite(DISP1_F,HIGH);
+              digitalWrite(DISP1_G,LOW);
               break; 
       case 1: //write to pins 1 and 5
               digitalWrite(0,LOW);
@@ -264,8 +310,7 @@ void reportToLED(int team, int score, int victory){ //not used in current versio
 void checkScorekeeping(){ //NOTICE: IT WILL SAVE DATA IF SCOREKEEPING IS DISABLED.
   scoCS = digitalRead(A3);
   if(scoCS==LOW && scoCS != scoPS){
-      if(keepScore) keepScore = false;
-      else keepScore = true;
+      keepScore = !keepScore;
     }
 }
 
@@ -294,14 +339,69 @@ void checkButtons(){ //Checks all the buttons. Made to streamline loop code.
   resPS = resCS;
 }
 
+void testPattern(int disp)
+{
+  if(disp == 0)
+  {
+    digitalWrite(DISP1_A, HIGH);
+    delay(300);
+    digitalWrite(DISP1_A, LOW);
+    digitalWrite(DISP1_B, HIGH);
+    delay(300);
+    digitalWrite(DISP1_B, LOW);
+    digitalWrite(DISP1_C, HIGH);
+    delay(300);
+    digitalWrite(DISP1_C, LOW);
+    digitalWrite(DISP1_D, HIGH);
+    delay(300);
+    digitalWrite(DISP1_D, LOW);
+    digitalWrite(DISP1_E, HIGH);
+    delay(300);
+    digitalWrite(DISP1_E, LOW);
+    digitalWrite(DISP1_F, HIGH);
+    delay(300);
+    digitalWrite(DISP1_F, LOW);
+    digitalWrite(DISP1_G, HIGH);
+    delay(300);
+    digitalWrite(DISP1_G, LOW);
+  }
+  else if(disp == 1)
+  {
+    digitalWrite(DISP2_A, HIGH);
+    delay(300);
+    digitalWrite(DISP2_A, LOW);
+    digitalWrite(DISP2_B, HIGH);
+    delay(300);
+    digitalWrite(DISP2_B, LOW);
+    digitalWrite(DISP2_C, HIGH);
+    delay(300);
+    digitalWrite(DISP2_C, LOW);
+    digitalWrite(DISP2_D, HIGH);
+    delay(300);
+    digitalWrite(DISP2_D, LOW);
+    digitalWrite(DISP2_E, HIGH);
+    delay(300);
+    digitalWrite(DISP2_E, LOW);
+    digitalWrite(DISP2_F, HIGH);
+    delay(300);
+    digitalWrite(DISP2_F, LOW);
+    digitalWrite(DISP2_G, HIGH);
+    delay(300);
+    digitalWrite(DISP2_G, LOW);
+    
+  }
+}
 void loop() {
   // put your main code here, to run repeatedly:
-  checkScorekeeping();
-  if(keepScore) //this controls scoring being off or on
+  //checkScorekeeping();
+  //if(keepScore) //this controls scoring being off or on
   {
-    checkButtons();
-    intToDigWrite(redScore,0);
-    intToDigWrite(blueScore,1);
-    delay(10);
+    //checkButtons();
+    //intToDigWrite(redScore,0);
+    //intToDigWrite(blueScore,1);
+    delay(500);
+    testPattern(1);
+    //intToDigWrite(0, 0);
+    //intToDigWrite(0, 1);
  }
 }
