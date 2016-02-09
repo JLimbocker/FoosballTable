@@ -97,7 +97,7 @@ void setup() {
 
 
 void intToDigWrite(int intput, int disp){ //intput is the character the display shows, disp is which display. 0 is Red and 1 is Blue
-  if(disp==0) //left display
+  if(disp==1) //left display
     switch(intput){
       case 0: //see explanation in header
               digitalWrite(DISP1_A,HIGH);
@@ -109,194 +109,194 @@ void intToDigWrite(int intput, int disp){ //intput is the character the display 
               digitalWrite(DISP1_G,LOW);
               break; 
       case 1: //write to pins 1 and 5
-              digitalWrite(0,LOW);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,LOW);
-              digitalWrite(4,LOW);
-              digitalWrite(5,LOW);
-              digitalWrite(6,LOW);
+              digitalWrite(DISP1_A,LOW);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,LOW);
+              digitalWrite(DISP1_E,LOW);
+              digitalWrite(DISP1_F,LOW);
+              digitalWrite(DISP1_G,LOW);
               break;
       case 2: //exclude pin 8 and pin 5
-              digitalWrite(0,HIGH);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,LOW);
-              digitalWrite(3,HIGH);
-              digitalWrite(4,HIGH);
-              digitalWrite(5,LOW);
-              digitalWrite(6,LOW);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,LOW);
+              digitalWrite(DISP1_D,HIGH);
+              digitalWrite(DISP1_E,HIGH);
+              digitalWrite(DISP1_F,LOW);
+              digitalWrite(DISP1_G,HIGH);
               break;
       case 3: //exclude pins 8 and 7
-              digitalWrite(0,HIGH);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,HIGH);
-              digitalWrite(4,LOW);
-              digitalWrite(5,LOW);
-              digitalWrite(6,HIGH);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,HIGH);
+              digitalWrite(DISP1_E,LOW);
+              digitalWrite(DISP1_F,LOW);
+              digitalWrite(DISP1_G,HIGH);
               break;
       case 4: //exclude pins 7, 6, and 0.
-              digitalWrite(0,LOW);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,LOW);
-              digitalWrite(4,LOW);
-              digitalWrite(5,HIGH);
-              digitalWrite(6,HIGH);
+              digitalWrite(DISP1_A,LOW);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,LOW);
+              digitalWrite(DISP1_E,LOW);
+              digitalWrite(DISP1_F,HIGH);
+              digitalWrite(DISP1_G,HIGH);
               break;
       case 5: //exclude pins 1 and 7
-              digitalWrite(0,HIGH);
-              digitalWrite(1,LOW);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,HIGH);
-              digitalWrite(4,LOW);
-              digitalWrite(5,HIGH);
-              digitalWrite(6,HIGH);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,LOW);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,HIGH);
+              digitalWrite(DISP1_E,LOW);
+              digitalWrite(DISP1_F,HIGH);
+              digitalWrite(DISP1_G,HIGH);
               break;
       case 6: //exclude pin 1
-              digitalWrite(0,HIGH);
-              digitalWrite(1,LOW);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,HIGH);
-              digitalWrite(4,HIGH);
-              digitalWrite(5,HIGH);
-              digitalWrite(6,HIGH);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,LOW);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,HIGH);
+              digitalWrite(DISP1_E,HIGH);
+              digitalWrite(DISP1_F,HIGH);
+              digitalWrite(DISP1_G,HIGH);
               break;
       case 7: //write to pins 0, 1, and 5
-              digitalWrite(0,HIGH);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,LOW);
-              digitalWrite(4,LOW);
-              digitalWrite(5,LOW);
-              digitalWrite(6,LOW);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,LOW);
+              digitalWrite(DISP1_E,LOW);
+              digitalWrite(DISP1_F,LOW);
+              digitalWrite(DISP1_G,LOW);
               break;
       case 8: //write to all pins
-              digitalWrite(0,HIGH);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,HIGH);
-              digitalWrite(4,HIGH);
-              digitalWrite(5,HIGH);
-              digitalWrite(6,HIGH);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,HIGH);
+              digitalWrite(DISP1_E,HIGH);
+              digitalWrite(DISP1_F,HIGH);
+              digitalWrite(DISP1_G,HIGH);
               break;
       case 9: //excude pins 7 and 6
-              digitalWrite(0,HIGH);
-              digitalWrite(1,HIGH);
-              digitalWrite(2,HIGH);
-              digitalWrite(3,LOW);
-              digitalWrite(4,LOW);
-              digitalWrite(5,HIGH);
-              digitalWrite(6,HIGH);
+              digitalWrite(DISP1_A,HIGH);
+              digitalWrite(DISP1_B,HIGH);
+              digitalWrite(DISP1_C,HIGH);
+              digitalWrite(DISP1_D,LOW);
+              digitalWrite(DISP1_E,LOW);
+              digitalWrite(DISP1_F,HIGH);
+              digitalWrite(DISP1_G,HIGH);
               break;
-       default:   digitalWrite(0,LOW); //if there's something wrong it will display X
-                  digitalWrite(1,HIGH);
-                  digitalWrite(2,HIGH);
-                  digitalWrite(3,LOW);
-                  digitalWrite(4,HIGH);
-                  digitalWrite(5,HIGH);
-                  digitalWrite(6,HIGH);
+       default:   digitalWrite(DISP1_A,LOW); //if there's something wrong it will display X
+                  digitalWrite(DISP1_B,HIGH);
+                  digitalWrite(DISP1_C,HIGH);
+                  digitalWrite(DISP1_D,LOW);
+                  digitalWrite(DISP1_E,HIGH);
+                  digitalWrite(DISP1_F,HIGH);
+                  digitalWrite(DISP1_G,HIGH);
                   break;
     }
   else //right display
     switch(intput){
       case 0: //write to all pins except pin 9 - see explanation in header
-              digitalWrite(10,HIGH);
-              digitalWrite(11,HIGH);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,HIGH);
-              digitalWrite(8,HIGH);
-              digitalWrite(9,HIGH);
-              digitalWrite(13,LOW);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,HIGH);
+              digitalWrite(DISP2_E,HIGH);
+              digitalWrite(DISP2_F,HIGH);
+              digitalWrite(DISP2_G,LOW);
               break; 
       case 1: //write to pins 1 and 5
-              digitalWrite(10,LOW);
-              digitalWrite(11,HIGH);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,LOW);
-              digitalWrite(8,LOW);
-              digitalWrite(9,LOW);
-              digitalWrite(13,LOW);
+              digitalWrite(DISP2_A,LOW);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,LOW);
+              digitalWrite(DISP2_E,LOW);
+              digitalWrite(DISP2_F,LOW);
+              digitalWrite(DISP2_G,LOW);
               break;
       case 2: //exclude pin 8 and pin 5
-              digitalWrite(10,HIGH);
-              digitalWrite(11,HIGH);
-              digitalWrite(12,LOW);
-              digitalWrite(7,HIGH);
-              digitalWrite(8,HIGH);
-              digitalWrite(9,LOW);
-              digitalWrite(13,LOW);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,LOW);
+              digitalWrite(DISP2_D,HIGH);
+              digitalWrite(DISP2_E,HIGH);
+              digitalWrite(DISP2_F,LOW);
+              digitalWrite(DISP2_G,HIGH);
               break;
       case 3: //exclude pins 8 and 7
-              digitalWrite(10,HIGH);
-              digitalWrite(11,HIGH);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,HIGH);
-              digitalWrite(8,LOW);
-              digitalWrite(9,LOW);
-              digitalWrite(13,HIGH);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,HIGH);
+              digitalWrite(DISP2_E,LOW);
+              digitalWrite(DISP2_F,LOW);
+              digitalWrite(DISP2_G,HIGH);
               break;
       case 4: //exclude pins 7, 6, and 0.
-              digitalWrite(10,LOW);
-              digitalWrite(11,HIGH);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,LOW);
-              digitalWrite(8,LOW);
-              digitalWrite(9,HIGH);
-              digitalWrite(13,HIGH);
+              digitalWrite(DISP2_A,LOW);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,LOW);
+              digitalWrite(DISP2_E,LOW);
+              digitalWrite(DISP2_F,HIGH);
+              digitalWrite(DISP2_G,HIGH);
               break;
       case 5: //exclude pins 1 and 7
-              digitalWrite(10,HIGH);
-              digitalWrite(11,LOW);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,HIGH);
-              digitalWrite(8,LOW);
-              digitalWrite(9,HIGH);
-              digitalWrite(13,HIGH);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,LOW);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,HIGH);
+              digitalWrite(DISP2_E,LOW);
+              digitalWrite(DISP2_F,HIGH);
+              digitalWrite(DISP2_G,HIGH);
               break;
       case 6: //exclude pin 1
-              digitalWrite(10,HIGH);
-              digitalWrite(11,LOW);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,HIGH);
-              digitalWrite(8,HIGH);
-              digitalWrite(9,HIGH);
-              digitalWrite(13,HIGH);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,LOW);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,HIGH);
+              digitalWrite(DISP2_E,HIGH);
+              digitalWrite(DISP2_F,HIGH);
+              digitalWrite(DISP2_G,HIGH);
               break;
       case 7: //write to pins 0, 1, and 5
-              digitalWrite(10,HIGH);
-              digitalWrite(11,HIGH);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,LOW);
-              digitalWrite(8,LOW);
-              digitalWrite(9,LOW);
-              digitalWrite(13,LOW);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,LOW);
+              digitalWrite(DISP2_E,LOW);
+              digitalWrite(DISP2_F,LOW);
+              digitalWrite(DISP2_G,LOW);
               break;
       case 8: //write to all pins
-              digitalWrite(10,HIGH);
-              digitalWrite(11,HIGH);
-              digitalWrite(22,HIGH);
-              digitalWrite(7,HIGH);
-              digitalWrite(8,HIGH);
-              digitalWrite(9,HIGH);
-              digitalWrite(13,HIGH);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,HIGH);
+              digitalWrite(DISP2_E,HIGH);
+              digitalWrite(DISP2_F,HIGH);
+              digitalWrite(DISP2_G,HIGH);
               break;
       case 9: //excude pins 7 and 6
-              digitalWrite(10,HIGH);
-              digitalWrite(11,HIGH);
-              digitalWrite(12,HIGH);
-              digitalWrite(7,LOW);
-              digitalWrite(8,LOW);
-              digitalWrite(9,HIGH);
-              digitalWrite(13,HIGH);
+              digitalWrite(DISP2_A,HIGH);
+              digitalWrite(DISP2_B,HIGH);
+              digitalWrite(DISP2_C,HIGH);
+              digitalWrite(DISP2_D,LOW);
+              digitalWrite(DISP2_E,LOW);
+              digitalWrite(DISP2_F,HIGH);
+              digitalWrite(DISP2_G,HIGH);
               break;
-       default:   digitalWrite(10,LOW); //if there's something wrong it will display X
-                  digitalWrite(11,HIGH);
-                  digitalWrite(12,HIGH);
-                  digitalWrite(7,LOW);
-                  digitalWrite(8,HIGH);
-                  digitalWrite(9,HIGH);
-                  digitalWrite(13,HIGH);
+       default:   digitalWrite(DISP2_A,LOW); //if there's something wrong it will display X
+                  digitalWrite(DISP2_B,HIGH);
+                  digitalWrite(DISP2_C,HIGH);
+                  digitalWrite(DISP2_D,LOW);
+                  digitalWrite(DISP2_E,HIGH);
+                  digitalWrite(DISP2_F,HIGH);
+                  digitalWrite(DISP2_G,HIGH);
                   break;
     }
 }
@@ -399,9 +399,14 @@ void loop() {
     //checkButtons();
     //intToDigWrite(redScore,0);
     //intToDigWrite(blueScore,1);
-    delay(500);
-    testPattern(1);
-    //intToDigWrite(0, 0);
-    //intToDigWrite(0, 1);
+    //delay(500);
+    //testPattern(1);
+    //testPattern(0);
+    for(int i = 0; i <= 9; i++)
+    {
+      delay(250);
+      intToDigWrite(i, 0);
+      intToDigWrite(i, 1);
+    }
  }
 }
