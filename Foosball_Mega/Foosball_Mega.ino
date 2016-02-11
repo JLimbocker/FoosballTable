@@ -1,3 +1,8 @@
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+  #include <avr/power.h>
+#endif
+
 #define DIGIT_0 0b00111111 //0x3F
 #define DIGIT_1 0b00000110 //0x06
 #define DIGIT_2 0b01011011 //0x5B
@@ -24,9 +29,26 @@
 #define SCORE_RED 2
 #define SCORE_BLUE 3
 
+#define REDLIGHT 4
+#define BLUELIGHT 5
+#define RESET 6
+#define ENABLE 7
+#define COLOR_BLUE blueSide.Color(0, 0, 255)
+#define COLOR_RED redSide.Color(255, 0, 0)
+
 byte digits[] = {DIGIT_0, DIGIT_1, DIGIT_2, DIGIT_3, DIGIT_4, DIGIT_5, DIGIT_6, DIGIT_7, DIGIT_8, DIGIT_9, DIGIT_A, DIGIT_B, DIGIT_C, DIGIT_D, DIGIT_E, DIGIT_F};
 byte redScore = 0;
 byte blueScore = 0;
+
+Adafruit_NeoPixel redSide = Adafruit_NeoPixel(21, REDLIGHT, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel blueSide = Adafruit_NeoPixel(20, BLUELIGHT, NEO_GRB + NEO_KHZ800);
+int pixelNum = 21; // number of LEDs on goal strip
+int idleBrightness = 150; // 0-255 idle brightness setting
+
+//int enable = 0;
+//int oldEnable = 0;
+//int state = 0;
+//int reset = 0;
 
 //disp = 0 -> Red Display
 //disp = 1 -> Blue Display
@@ -73,7 +95,7 @@ void incrementBlueScore()
     blueScore = 9;
   PORTA = digits[redScore];
   PORTC = digits[blueScore];
-  //delay(250); //delay to debounce switch
+  delay(250); //delay to debounce switch
 }
 
 void incrementRedScore()
@@ -83,31 +105,40 @@ void incrementRedScore()
     redScore = 9;
   PORTA = digits[redScore];
   PORTC = digits[blueScore];
-  //delay(250); //delay to debounce switch
+  delay(250); //delay to debounce switch
 }
 
-void setup() {
+void setup() 
+{
   redScore = 0;
   blueScore = 0;
   Serial.begin(9600);
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(SCORE_BLUE), incrementBlueScore, FALLING);
-  attachInterrupt(digitalPinToInterrupt(SCORE_RED), incrementRedScore, FALLING);
+
+  // initialize pin modes
+  for (int i = 2; i < 8; i++) {
+    pinMode(i, INPUT_PULLUP);
+  }
+
+  // turn on goal LEDs
+  redSide.begin();
+  blueSide.begin();
+  
+  attachInterrupt(digitalPinToInterrupt(SCORE_BLUE), incrementBlueScore, HIGH);
+  attachInterrupt(digitalPinToInterrupt(SCORE_RED), incrementRedScore, HIGH);
   DDRA = 0xFF; //Set portA to digital output
   DDRC = 0xFF; //Set portC to digital output
   PORTA = 0x00; //Init output to low
   PORTC = 0x00; //Init output to low
   testPattern();
   testPattern();
+  //flash(3, 100, 2);
   PORTA = DIGIT_0;
   PORTC = DIGIT_0;
-  
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  
+void loop() 
+{
+  //Serial.println("RED: " + String(redScore) + ", BLUE: " + String(blueScore));
   //delay(1000);
   //testPattern();
 }

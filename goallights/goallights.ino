@@ -56,26 +56,42 @@ void flash(int repeat, int wait, int side) {
           blueSide.setBrightness(255);
           blueSide.setPixelColor(j, COLOR_BLUE);
           break;
+        case 2: // flash both
+          redSide.setBrightness(255);
+          redSide.setPixelColor(j, COLOR_RED);
+          blueSide.setBrightness(255);
+          blueSide.setPixelColor(j, COLOR_BLUE);
+          break;
         default: // default to off
           redSide.setPixelColor(j, 0, 0, 0);
           blueSide.setPixelColor(j, 0, 0, 0);
           break;
       }
     }
+    redSide.show();
+    blueSide.show();
     delay(wait);
     // go off before next flash
     for(int k=0; k<pixelNum; k++) {
-      redSide.setPixelColor(i, 0, 0, 0);
-      blueSide.setPixelColor(i, 0, 0, 0);
+      redSide.setPixelColor(k, 0, 0, 0);
+      blueSide.setPixelColor(k, 0, 0, 0);
     }
+    redSide.show();
+    blueSide.show();
     delay(wait);
   }
 }
 
 // light is dimmed but constant on
 void idle(int brightness) {
+  for(int i=0; i<pixelNum; i++) {
+    redSide.setPixelColor(i, COLOR_RED);
+    blueSide.setPixelColor(i, COLOR_BLUE);
+  }
   redSide.setBrightness(brightness);
   blueSide.setBrightness(brightness);
+  redSide.show();
+  blueSide.show();
 }
 
 // returns to dim setting from bright
