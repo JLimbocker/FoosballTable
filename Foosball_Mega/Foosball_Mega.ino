@@ -46,7 +46,7 @@
 #define BLUELIGHT 5
 #define COLOR_BLUE blueSide.Color(0, 0, 255)
 #define COLOR_RED redSide.Color(255, 0, 0)
-enum colors { RED, BLUE, BOTH, WHITE, BLACK };
+enum colors { RED, BLUE, BOTH, WHITE, REDWIN, BLUEWIN };
 
 byte digits[] = {DIGIT_0, DIGIT_1, DIGIT_2, DIGIT_3, DIGIT_4, DIGIT_5, DIGIT_6, DIGIT_7, DIGIT_8, DIGIT_9, DIGIT_A, DIGIT_B, DIGIT_C, DIGIT_D, DIGIT_E, DIGIT_F};
 byte redScore = 0;
@@ -61,7 +61,7 @@ bool gameWon = false;
 Adafruit_NeoPixel redSide = Adafruit_NeoPixel(21, REDLIGHT, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel blueSide = Adafruit_NeoPixel(20, BLUELIGHT, NEO_GRB + NEO_KHZ800);
 int pixelNum = 21; // number of LEDs on goal strip
-int idleBrightness = 50; // 0-255 idle brightness setting
+int idleBrightness = 75; // 0-255 idle brightness setting
 
 //disp = 0 -> Red Display
 //disp = 1 -> Blue Display
@@ -112,8 +112,8 @@ void blueScored()
 {
   blueHold++;
   //if(blueHold % 2 == 1)
-  {
-    if(blueScore < 9) 
+  //{
+    if(blueScore < 9 && gameWon == false) 
       blueScore++;
     flash(2, 100, RED); // red goal was scored on
     idle(idleBrightness);
@@ -133,7 +133,7 @@ void blueScored()
         Serial.println("Game won by Blue!");
       #endif
     }
-  }
+  //}
   
   delay(50); //delay to debounce switch
   #ifdef __DEBUG__
@@ -145,8 +145,9 @@ void redScored()
 {
   redHold++;
   //if(redHold%2 == 1)
-  {
-    if(redScore < 9) redScore++;
+  //{
+    if(redScore < 9 && gameWon == false) 
+      redScore++;
     flash(2, 100, BLUE);
     idle(idleBrightness);
     PORTA = digits[redScore];
@@ -160,16 +161,16 @@ void redScored()
       blueSide.setBrightness(idleBrightness);
       redScore = 9;
       PORTA = digits[redScore];
-    } else if(redScore >= 9 && gameWon == true){
+    } else if(redScore >= 9 && gameWon == true) {
       #ifdef __DEBUG__
         Serial.println("Game won by Red!");
       #endif
     }
-  }
-  delay(50);//delay to debounce switch
- // #ifdef __DEBUG__
- //   Serial.println("ISR Complete");
- // #endif
+  //}
+  delay(50); //delay to debounce switch
+  #ifdef __DEBUG__
+    Serial.println("ISR Complete");
+  #endif
 }
 
 void enableScore()
@@ -210,7 +211,7 @@ void enableScore()
     #endif
   }
   
-  delay(20000); //delay to debounce switch
+  delay(30000); //delay to debounce switch
 }
 
 void resetScore()
@@ -223,11 +224,13 @@ void resetScore()
     PORTC = digits[redScore];
     PORTA = digits[blueScore];
     flash(2, 100, WHITE); // white on both sides
+    delay(100);
+    idle(idleBrightness);
     #ifdef __DEBUG__
       Serial.println("Sc Reset");
     #endif
   }
-  delay(20000); //delay to debounce switch
+  delay(18000); //delay to debounce switch
 }
 
 // flash lights when scored on
@@ -254,6 +257,18 @@ void flash(byte repeat, int wait, byte side) {
           redSide.setPixelColor(j, 255, 255, 255);
           blueSide.setBrightness(255);
           blueSide.setPixelColor(j, 255, 255, 255);
+          break;
+        case REDWIN:
+          redSide.setBrightness(255);
+          redSide.setPixelColor(j, COLOR_RED);
+          blueSide.setBrightness(255);
+          blueSide.setPixelColor(j, COLOR_RED);
+          break;
+        case BLUEWIN:
+          redSide.setBrightness(255);
+          redSide.setPixelColor(j, COLOR_BLUE);
+          blueSide.setBrightness(255);
+          blueSide.setPixelColor(j, COLOR_BLUE);
           break;
         default: // default to off
           redSide.setPixelColor(j, 0, 0, 0);
@@ -297,81 +312,34 @@ void idle(int brightness) {
   blueSide.show();
 }
 
-// Rainbow equally distributed throughout
-void rainbowCycle(uint8_t wait, byte side) {
-  uint16_t i, j;
-  switch (side) {
-    case RED:
-      for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
-        for(i=0; i< redSide.numPixels(); i++) {
-          redSide.setPixelColor(i, Wheel(((i * 256 / redSide.numPixels()) + j) & 255, RED));
-        }
-        redSide.show();
-        delay(wait);
-      }
-      break;
-    case BLUE:
-      for(j=0; j<256*5; j++) { // 5 cycles of all colors on wheel
-        for(i=0; i< blueSide.numPixels(); i++) {
-          blueSide.setPixelColor(i, Wheel(((i * 256 / blueSide.numPixels()) + j) & 255, BLUE));
-        }
-        blueSide.show();
-        delay(wait);
-      }
-      break;
-  }
-}
-
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos, byte side) {
-  WheelPos = 255 - WheelPos;
-  switch(side) {
-    case RED:
-      if(WheelPos < 85) {
-        return redSide.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-      }
-      if(WheelPos < 170) {
-        WheelPos -= 85;
-        return redSide.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-      }
-      WheelPos -= 170;
-      return redSide.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-      break;
-    case BLUE:
-      if(WheelPos < 85) {
-        return blueSide.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-      }
-      if(WheelPos < 170) {
-        WheelPos -= 85;
-        return blueSide.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-      }
-      WheelPos -= 170;
-      return blueSide.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-      break;
-  }
-}
-
 // winning light anim
 void winner(byte side)
 {
   #ifdef __DEBUG__
     Serial.println("Winner is " + String(side));
   #endif
-  int t = millis();
+  unsigned long tStart = millis();
   switch(side) {
     case RED:
       redSide.setBrightness(255);
-      while (millis()-t <= 10000) {
-        rainbowCycle(0, RED);
+      while (millis() - tStart <= 10000)
+      {
+        for(int i=0; i<pixelNum; i++)
+        {
+          flash(5, 200, REDWIN);
+        }
         redSide.show();
       }
       resetScore();
       break;
     case BLUE:
       blueSide.setBrightness(255);
-      while (millis()-t <= 10000) {
-        rainbowCycle(0, BLUE);
+      while (millis() - tStart <= 10000)
+      {
+        for(int j=0; j<pixelNum; j++)
+        {
+          flash(5, 200, BLUEWIN);
+        }
         blueSide.show();
       }
       resetScore();
@@ -390,6 +358,7 @@ void setup()
   rst = 0;
   scoreToggle = 1;
   gameWon = false;
+  
   noInterrupts();
   redScore = 0;
   blueScore = 0;
@@ -397,10 +366,12 @@ void setup()
     Serial.begin(9600);
   #endif
   // initialize pin modes
-  for (int i = 2; i < 8; i++) {
-    pinMode(i, INPUT_PULLUP);
-  }
+  pinMode(2, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
   pinMode(18, INPUT_PULLUP);
+  pinMode(20, INPUT_PULLUP);
+  pinMode(21, INPUT_PULLUP);
 
   // turn on goal LEDs
   redSide.begin();
